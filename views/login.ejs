@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
+    <title>Login</title>
+    <style>
+        * {
+            font-family: Arial;
+        }
+
+        body {
+            background-color: #F4F4F4;
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .contain {
+            width: 30%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            border: 2px solid black;
+            margin: auto;
+            padding: 25px;
+            background-color: aliceblue;
+            border-radius: 1.5%;
+        }
+
+        .login {
+            margin: 0 auto;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .ip {
+            height: 4vh;
+            width: 30vh;
+        }
+
+        button {
+            height: 4vh;
+            width: 15vh;
+            background-color: azure;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .contain>h1 {
+            text-align: center;
+        }
+
+        form{
+            display: inline-block;
+        }
+        .first{
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="contain">
+        <h1>Login</h1>
+        <hr><br>
+        <div class="login">
+            <form action="/login-user" method="post" id="form">
+                <div class="first">
+                    <label>Email:</label><br><br>
+                    <input type="email" id="email" name="email" class="ip">
+                </div>
+                <br>
+                <div class="first">
+                    <label>Password:</label><br><br>
+                    <input type="password" id="pass" name="pass" class="ip">
+                </div>
+                <br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

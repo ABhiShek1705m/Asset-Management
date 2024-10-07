@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="http://127.0.0.1:8081/nav.css" rel="stylesheet">
+<script src="http://127.0.0.1:8081/nav-script.js" type="text/javascript" defer></script>
+<style>
+    * {
+        font-family: Arial;
+    }
+
+    .table-ops {
+        border: 1px solid black;
+        overflow: hidden;
+        background-color: #efeaea;
+    }
+
+    .table-ops a {
+        float: left;
+        font-size: 16px;
+        color: rgb(0, 0, 0);
+        text-align: center;
+        text-decoration: none;
+        margin: 7px;
+    }
+
+    .material-icons {
+        font-size: 16px;
+        color: #000000;
+    }
+
+    .table-data {
+        margin: 20px;
+
+    }
+
+    table {
+        width: 100%;
+    }
+
+    select {
+        margin: 10px;
+        height: 20px;
+    }
+        .table-data th,
+    .table-data td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table-data th {
+        background-color: #f2f2f2;
+    }
+
+    .table-data tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .table-scroll table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-scroll th,
+    .table-scroll td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table-scroll th {
+        background-color: #f2f2f2;
+    }
+
+    .table-scroll tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="http://127.0.0.1:8081/form.css">
+</head>
+
+<body>
+    <button id="back_button" onclick='window.history.back();'>Go Back</button>
+    <navigation-bar></navigation-bar>
+    <div class="container">
+        <h1 align="center">
+            <%= title %>
+        </h1>
+        <hr><br>
+        <% if(action=='add') { %>
+            <div class="cont">
+                <form action="/requests/add_data" method="post" id="frm">
+                    <div class="assetDetails">
+                        <label>Request Type:</label>
+                            <select name="reqType" id="reqType">
+                                <option value="" disabled selected>Select an option</option>
+                                <% for(const req of reqType) { %>
+                                    <option value="<%= req %>"><%= req %></option>
+                                <% } %>
+                            </select><br><br>
+                            <label>Asset:</label>
+                            <select name="asset" id="asset">
+                                <option value="" disabled selected>Select an option</option>
+                                <% for(const asset of assets) { %>
+                                    <option value="<%= asset %>"><%= asset %></option>
+                                <% } %>
+                            </select><br><br>
+                            <label>Employee:</label>
+                            <select name="emp" id="emp">
+                                <option value="" disabled selected>Select an option</option>
+                                <% for(const emp of emps) { %>
+                                    <option value="<%= emp %>"><%= emp %></option>
+                                <% } %>
+                            </select><br><br>
+                            <label>Location:</label>
+                            <select name="loc" id="loc">
+                                <option value="" disabled selected>Select an option</option>
+                                <% for(const loc of locs) { %>
+                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="<%= loc %>"><%= loc %></option>
+                                <% } %>
+                            </select><br><br>
+                            <label>Created By:</label>
+                            <select name="cr" id="cr">
+                                <option value="" disabled selected>Select an option</option>
+                                <% for(const user of emps) { %>
+                                    <option value="<%= user %>"><%= user %></option>
+                                <% } %>
+                            </select><br><br>
+                            <label>Description:</label><br>
+                            <textarea id="desc" name="desc" rows="10" cols="45"></textarea>
+                    </div>
+                    <br><br>
+                    <button id="b1" type="submit">Request</button>
+                </form>
+            </div>
+
+                <% } else if(action ==='list'){ %>
+                    <div class="table-ops">
+                        <a href="/requests/add">New Request</a>
+                        <a href="/home/admin">Home</a>
+                        <a href="" class="right" style="float: right;">Export</a>
+                    </div>
+                    <div class="table-scroll">
+                    <div class="table-data">
+                        <table border="1">
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Request Type ID</th>
+                                <th>Asset ID</th>
+                                <th>Employee ID</th>
+                                <th>Location ID</th>
+                                <th>Description</th>
+                                <th>Created By</th>
+                                <th>Created At</th>
+                                
+                            </tr>
+                               <% if(data.length> 0) { %>
+                               <% data.forEach(function(row) { %>
+                                <tr>
+                                    <td><%= row.transaction_id %></td>
+                                    <td><%= row.request_type_id %></td>
+                                    <td><%= row.asset_id %></td>
+                                    <td><%= row.employee_id %></td>
+                                    <td><%= row.location_id %></td>
+                                    <td><%= row.description %></td>
+                                    <td><%= row.created_by %></td>
+                                    <td><%= row.created_at %></td>
+                                </tr>
+                                <% }) %> 
+                                <% } else { %>
+                                    <tr colspan="4">No Data Found</tr>
+                                     <% } %>
+ 
+                        </table>
+                    </div>
+                </div>
+    </div>
+    <% } %>
+    <script src="http://127.0.0.1:8081/validation.js" type="text/javascript" defer></script>
+
+</body>
+
+</html>

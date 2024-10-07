@@ -1,0 +1,37 @@
+*{
+    font-family: Arial;
+}
+body{
+    background-color: #F4F4F4;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+}
+h1{
+    position: sticky;
+    width: 150%;
+}
+
+.cont{
+    margin: 0 auto;
+    font-size: 20px;
+    text-align: center;
+}
+form{
+    font-size: 16px;
+    display: inline-block;
+}
+input{
+    height: 3.5vh;
+    width: 44.5vh;
+}
+#b1 {
+    height: 4vh;
+    width: 15vh;
+    background-color: azure;
+    border-radius: 6px;
+    font-size: 15px;
+}
+.assetDetails, .soft, .oiMenu{
+    text-align: left;
+}

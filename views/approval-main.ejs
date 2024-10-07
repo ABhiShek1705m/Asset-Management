@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="http://127.0.0.1:8081/nav.css" rel="stylesheet">
+<script src="http://127.0.0.1:8081/nav-script.js" type="text/javascript" defer></script>
+<style>
+
+    * {
+        font-family: Arial;
+    }
+
+    .table-ops {
+        border: 1px solid black;
+        overflow: hidden;
+        background-color: #efeaea;
+    }
+
+    .table-ops a {
+        float: left;
+        font-size: 16px;
+        color: rgb(0, 0, 0);
+        text-align: center;
+        text-decoration: none;
+        margin: 7px;
+    }
+
+    .material-icons {
+        font-size: 16px;
+        color: #000000;
+    }
+
+    .table-data {
+        margin: 20px;
+
+    }
+
+    table {
+        width: 100%;
+    }
+
+    select {
+        margin: 10px;
+        height: 20px;
+    }
+    #approve {
+            background-color: rgb(140, 211, 140);
+
+        }
+
+        #reject {
+            background-color: rgb(237, 120, 120);
+
+        }
+        .table-data th,
+    .table-data td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table-data th {
+        background-color: #f2f2f2;
+    }
+
+    .table-data tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .table-scroll table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-scroll th,
+    .table-scroll td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table-scroll th {
+        background-color: #f2f2f2;
+    }
+
+    .table-scroll tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="http://127.0.0.1:8081/form.css">
+</head>
+
+<body>
+    <button id="back_button" onclick='window.history.back();'>Go Back</button>    <navigation-bar></navigation-bar>
+    <div class="container">
+        <h1 align="center">
+            <%= title %>
+        </h1>
+        <hr><br>
+        <% if (action === 'action') { %>
+            <div class="cont">
+                <form action="/approval/handle_req/<%=App.employee_id%>" method="post" id="frm">
+                    <div class="assetDetails">
+                        <label>Request Type:</label><br>
+                        <input type="text" name="reqType" id="reqType" value="<%= req.request_type_name %>"> <br><br>
+                        <label>AssetID:</label><br>
+                        <input type="text" name="assetId" id="assetId" value="<%= data.asset_id %>"> <br><br>
+                        <label>Employee:</label><br>
+                        <input type="text" name="empId" id="empId" value="<%= App.email_id %>"> <br><br>
+                        <label>Location:</label><br>
+                        <input type="text" name="locId" id="locId" value="<%= loc.city %>"> <br><br>
+                        <label>Description:</label><br>
+                        <textarea id="desc" name="desc" rows="10" cols="50"><%= data.description %></textarea><br><br><br>
+                        <label>Approve/Reject</label>
+                        <select name="options">
+                            <option value="approve">Approve</option>
+                            <option value="reject">Reject</option>
+                        </select>
+                    </div>
+                    <br><br>
+                    <div class="buttons">
+                        <button id="approve" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        <% } else if (action == 'list') { %>
+            <div class="table-scroll">
+                <div class="table-data">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Request Type ID</th>
+                                <th>Request Status</th>
+                                <th>Approver ID</th>
+                                <th>isApproved?</th>
+                                <th>Created At</th>
+                                <th colspan="2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (data.length > 0) { %>
+                                <% data.forEach(function(row) { %>
+                                    <tr>
+                                        <td><%= row.transaction_id %></td>
+                                        <td><%= row.request_type_id %></td>
+                                        <td><%= row.request_status %></td>
+                                        <td><%= row.approver_id %></td>
+                                        <td><%= row.isApproved %></td>
+                                        <td><%= row.created_at %></td>
+                                        <td><a href="/approval/<%= row.transaction_id %>/<%= row.approver_id %>"><button>View</button></a></td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="7">No Data Found</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } else if(action =='home') { %> 
+            <div class="table-ops">
+                <a href="/approvers/add">New</a>
+                <a href="">Filter</a>
+                <a href="/home/admin">Home</a>
+                <a href="" class="right" style="float: right;">Export</a>
+            </div>
+            <div class="table-scroll">
+                <div class="table-data">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Request Type ID</th>
+                                <th>Request Status</th>
+                                <th>Approver ID</th>
+                                <th>isApproved?</th>
+                                <th>Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (data.length > 0) { %>
+                                <% data.forEach(function(row) { %>
+                                    <tr>
+                                        <td><%= row.transaction_id %></td>
+                                        <td><%= row.request_type_id %></td>
+                                        <td><%= row.request_status %></td>
+                                        <td><%= row.approver_id %></td>
+                                        <td><%= row.isApproved %></td>
+                                        <td><%= row.created_at %></td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="6">No Data Found</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <a href="/approval/pending/<%=appID%>"><button>View Pending Approvals</button></a>
+        <% } %>
+    </div>
+
+    <script src="http://127.0.0.1:8081/validation.js" type="text/javascript" defer></script>
+</body>
+
+</html>

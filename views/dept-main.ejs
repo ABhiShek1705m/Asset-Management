@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="http://127.0.0.1:8081/nav.css" rel="stylesheet">
+<script src="http://127.0.0.1:8081/nav-script.js" type="text/javascript" defer></script>
+<style>
+    * {
+        font-family: Arial;
+    }
+
+    .table-ops {
+        border: 1px solid black;
+        overflow: hidden;
+        background-color: #efeaea;
+    }
+
+    .table-ops a {
+        float: left;
+        font-size: 16px;
+        color: rgb(0, 0, 0);
+        text-align: center;
+        text-decoration: none;
+        margin: 7px;
+    }
+
+    .material-icons {
+        font-size: 16px;
+        color: #000000;
+    }
+
+    .table-data {
+        margin: 20px;
+
+    }
+
+    table {
+        width: 100%;
+    }
+        .table-data th,
+    .table-data td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table-data th {
+        background-color: #f2f2f2;
+    }
+
+    .table-data tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .table-scroll table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-scroll th,
+    .table-scroll td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table-scroll th {
+        background-color: #f2f2f2;
+    }
+
+    .table-scroll tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="http://127.0.0.1:8081/form.css">
+</head>
+
+<body>
+    <button id="back_button" onclick='window.history.back();'>Go Back</button>
+    <navigation-bar></navigation-bar>
+    <div class="container">
+        <h1 align="center">
+            <%= title %>
+        </h1>
+        <% if(action == 'add') { %>
+            <div class="cont">
+                <form action="/department/add_data" method="post" id="frm">
+                    <div class="assetDetails">
+                        <label>Department Name:</label><br>
+                        <input type="text" id="dname" name="dname"><br><br>
+                    </div>
+                    <br><br>
+                    <button id="b1" type="submit">Add</button>
+                </form>
+            </div>
+
+        <% } else if(action == 'edit') { %> 
+            <div class="cont">
+                <form action="/department/update/<%= data.department_id %>" method="post" id="frm">
+                    <div class="assetDetails">
+                        <label>Department Name:</label><br>
+                        <input type="text" id="dname" name="dname" value="<%= data.department_name %>"><br><br>
+                    </div>
+                    <br><br>
+                    <button id="b1" type="submit">Update</button>
+                </form>
+            </div>
+
+        <% } else { %>
+            <div class="table-ops">
+                <a href="/department/add">New</a>
+                <a href="">Filter</a>
+                <a href="/home/admin">Home</a>
+                <a href="" class="right" style="float: right;">Export</a>
+            </div>
+            <div class="table-scroll">
+            <div class="table-data">
+                <table border="1">
+                    <tr>
+                        <th>ID</th>
+                        <th>Department</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                    <% if(data.length> 0)
+                        {
+                        data.forEach(function(row) { %>
+                        <tr>
+                            <td><%= row.department_id %></td>
+                            <td><%= row.department_name %></td>
+                            <td><a href="/department/update/<%= row.department_id %>"><button>Update</button></a></td>
+                            <td><a href="/department/delete/<%= row.department_id %>"><button>Delete</button></a></td>
+                        </tr>
+                        <% }); } else { %>
+                            <tr colspan="8">No Data Found</tr>
+                            <% }%>
+    
+                </table>
+            </div>
+        </div>
+        </div>
+        <% } %>
+        <script src="http://127.0.0.1:8081/validation.js" type="text/javascript" defer></script>
+
+        
+</body>
+
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="http://127.0.0.1:8081/nav.css" rel="stylesheet">
+<link href="http://127.0.0.1:8081/form.css" rel="stylesheet">
+<script src="http://127.0.0.1:8081/nav-script.js" type="text/javascript" defer></script>
+
+<style>
+    * {
+        font-family: Arial;
+    }
+
+    .table-ops {
+        border: 1px solid black;
+        overflow: hidden;
+        background-color: #efeaea;
+    }
+
+    .table-ops a {
+        float: left;
+        font-size: 16px;
+        color: rgb(0, 0, 0);
+        text-align: center;
+        text-decoration: none;
+        margin: 7px;
+    }
+    .table-data{
+        margin: 20px;
+    }
+    table{
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .material-icons {
+        font-size: 16px;
+        color: #000000;
+    }
+    .radio {
+            display: flex;
+            flex-direction: row;
+        }
+        .radio input{
+            margin-top: 15px;
+            width: 5%;
+        }
+        .radio label{
+            width: 100%;
+            padding: 12px;
+        }
+            
+    .table-data th,
+    .table-data td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table-data th {
+        background-color: #f2f2f2;
+    }
+
+    .table-data tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .table-scroll table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-scroll th,
+    .table-scroll td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table-scroll th {
+        background-color: #f2f2f2;
+    }
+
+    .table-scroll tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    
+</style>
+
+<head>
+    <title>Home</title>
+</head>
+
+<body>
+    <button id="back_button" onclick='window.history.back();'>Go Back</button>
+    <navigation-bar></navigation-bar>
+    <div class="container">
+        <h1 align="center">
+            <%= title %>
+        </h1>
+        <% if(action == 'add') { %>
+            <div class="cont">
+                <form action="/users/add_data" method="post" id="frm">
+                    <div class="assetDetails">
+                        <label for="email">Email:</label><br>
+                        <input type="email" id="email" name="email"><br><br>
+                        <label>Role:</label><br>
+                        <div class="radio">
+                            <input type="radio" id="admin" name="role" value="admin">
+                            <label for="admin">Admin</label><br>
+    
+                        </div>
+                        <div class="radio">
+                            <input type="radio" id="engg" name="role" value="engineer">
+                            <label for="engg">Service Engineer</label><br>
+                        </div>
+    
+                        <div class="radio">
+                            <input type="radio" id="reg" name="role" value="employee">
+                            <label for="reg">Regular Employee</label><br>
+                        </div>
+                        <label for="pass">Password:</label><br>
+                        <input type="password" id="pass" name="pass"><br><br>
+                    </div>
+                    <br><br>
+                    <button id="b1" type="submit">Add</button>
+                </form>
+            </div>
+        <% } else if(action == "update") { %>
+            <div class="cont">
+                <form action="/users/update/<%= data.user_id %>" method="post" id="frm">
+                    <div class="assetDetails">
+                        <label for="email">Email:</label><br>
+                        <input type="email" id="email" name="email" value="<%= data.user_email %>"><br><br>
+                        <label>Role:</label><br>
+                        <div class="radio">
+                            <input type="radio" id="admin" name="role" value="admin">
+                            <label for="admin">Admin</label><br>
+    
+                        </div>
+                        <div class="radio">
+                            <input type="radio" id="engg" name="role" value="engineer">
+                            <label for="engg">Service Engineer</label><br>
+                        </div>
+    
+                        <div class="radio">
+                            <input type="radio" id="reg" name="role" value="employee">
+                            <label for="reg">Regular Employee</label><br>
+                        </div>
+                        <label for="pass">Password:</label><br>
+                        <input type="password" id="pass" name="pass"><br><br>
+                        
+                        <div class="radio">
+                            <input type="radio" id="reg" name="Approver" value="isApprover">
+                            <label for="reg">isApprover</label><br>
+                        </div>
+
+                    </div>
+                    <br><br>
+                    <button id="b1" type="submit">Update</button>
+                </form>
+            </div>
+
+
+        <% }  else { %>
+            <div class="table-ops">
+                <a href="/users/add">New</a>
+                <a href="">Filter</a>
+                <a href="/home/admin">Home</a>
+                <a href="" class="right" style="float: right;">Export</a>
+            </div>
+            <div class="table-scroll">
+                <div class="table-data">
+                    <table border="1">
+                        <tr>
+                            <th>User ID</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created At</th>
+                            <th>isApprover</th>
+                            <th colspan="2">Action</th>
+                        </tr>
+                        <% if(data.length > 0) { %>
+                            <% data.forEach(function(row) { %>
+                                <tr>
+                                    <td><%= row.user_id %></td>
+                                    <td><%= row.user_email %></td>
+                                    <td><%= row.role %></td>
+                                    <td><%= row.createdAt %></td>
+                                    <td><%= row.isApprover %></td>
+                                    <td><a href="/users/delete/<%= row.user_id %>"><button>Delete</button></a></td>
+                                    <td><a href="/users/update/<%= row.user_id %>"><button>Update</button></a></td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="6">No Data Found</td>
+                            </tr>
+                        <% } %>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</body>
+<script src="http://127.0.0.1:8081/validation.js" type="text/javascript" defer></script>
+</html>
